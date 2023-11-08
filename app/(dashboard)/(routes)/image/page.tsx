@@ -20,11 +20,13 @@ import { Select, SelectContent } from "@/components/ui/select";
 import { SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import Image from "next/image"
 import { Card, CardFooter } from "@/components/ui/card";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 const PhotoPage = () => {
   // const proModal = useProModal();
   const router = useRouter();
+  const proModal = useProModal()
   const [photos, setPhotos] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,7 +50,9 @@ const PhotoPage = () => {
 
       setPhotos(urls);
     } catch (error: any) {
-      console.log(error)
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
     } finally {
       router.refresh();
     }

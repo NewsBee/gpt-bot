@@ -18,9 +18,12 @@ import Loader from "@/components/loader";
 import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import { useProModal } from "@/hooks/use-pro-modal";
+
 
 export default function ConversationPage() {
   const router = useRouter();
+  const proModal = useProModal()
   const [messages, setMessages] = useState<
     OpenAI.Chat.Completions.CreateChatCompletionRequestMessage[]
   >([]);
@@ -51,7 +54,9 @@ export default function ConversationPage() {
 
       form.reset();
     } catch (error: any) {
-      console.log(error);
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
     } finally {
       router.refresh();
     }

@@ -22,9 +22,11 @@ import Loader from "@/components/loader";
 import { formSchema } from "./constant";
 import BotAvatar from "@/components/bot-avatar";
 import { useState } from "react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const CodePage = () => {
   const router = useRouter();
+  const proModal = useProModal()
   const [messages, setMessages] = useState<
   OpenAI.Chat.Completions.CreateChatCompletionRequestMessage[]
 >([]);
@@ -54,12 +56,9 @@ const CodePage = () => {
       
       form.reset();
     } catch (error: any) {
-      console.log(error)
-      // if (error?.response?.status === 403) {
-      //   proModal.onOpen();
-      // } else {
-      //   toast.error("Something went wrong.");
-      // }
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
     } finally {
       router.refresh();
     }
