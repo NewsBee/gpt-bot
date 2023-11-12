@@ -1,43 +1,45 @@
-// Import necessary modules and types
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs";
+import { v4 as uuidv4 } from "uuid";
+import { core, midtransClient, snap } from "@/lib/snap";
 import { buffer } from "micro";
+import { NextApiRequest } from "next";
 import prismadb from "@/lib/prismadb";
-import { core } from "@/lib/snap";
 
-const DAY_IN_MS = 86_400_000;
+export async function POST(req: NextApiRequest) {
+  const rawBody = await buffer(req);
+  const notificationJson = JSON.parse(rawBody.toString());
 
-// Define the route handler function
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const rawBody = await buffer(req);
-    const notificationJson = JSON.parse(rawBody.toString());
-
-
-    // Handling Midtrans notification
+    // Cek notifikasi kenetikan
     core.transaction
       .notification(notificationJson)
       .then(async (statusResponse: any) => {
         const orderId: string = statusResponse.order_id;
         const transactionStatus: string = statusResponse.transaction_status;
+        // const orderId = statusResponse.order_id;
+        // const transactionStatus = statusResponse.transaction_status;
 
-        // Find subscription based on order ID
+        // Cari subscription berdasarkan order ID
         const subscription = await prismadb.userSubscription.findUnique({
           where: { midtransOrderId: orderId },
         });
 
         if (!subscription) {
-          return res.status(404).json({
+          return NextResponse.json({
             status: 404,
             message: "Subscription not found",
           });
         }
 
-        // Update subscription status if the transaction is successful
-        if (transactionStatus === "settlement" || transactionStatus === "capture") {
+        // Update status berlangganan jika transaksi berhasil
+        if (
+          transactionStatus === "settlement" ||
+          transactionStatus === "capture"
+        ) {
           const currentPeriodStart = new Date();
           const currentPeriodEnd = new Date(currentPeriodStart);
           currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
-
           await prismadb.userSubscription.update({
             where: { id: subscription.id },
             data: {
@@ -48,17 +50,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
           });
         }
-
-        return res.status(200).json({
-          status: 200,
-          message: "Subscription successful",
-        });
+        NextResponse.json({ staus: 200, message: "Berhasil berlangganan" });
       });
-
-  } catch (error:any) {
-    return res.status(500).json({
+  } catch (error) {
+    NextResponse.json({
       status: 500,
-      message: `Internal server error: ${error.message}`,
+      message: "message: 'Internal server error', error: error.message",
     });
   }
 }
