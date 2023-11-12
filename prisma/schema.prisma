@@ -17,3 +17,22 @@ model UserApiLimit{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// model UserSubscription{
+//   id String @id @default(cuid())
+//   userId String @unique
+//   midtransCutomerId String @unique @map(name: "midtrans_customer_id")
+//   midtransSubscriptionId String @unique @map(name:"midtrans_subscription_id")
+//   midtransCurrentPeriodEnd DateTime @map(name:"midtrans_current_period_end")
+// }
+
+model UserSubscription {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  midtransOrderId    String?
+  midtransTransactionId String?
+  subscriptionStatus String?
+  price              Float?
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+}

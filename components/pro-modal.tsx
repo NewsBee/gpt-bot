@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogDescription, DialogFooter } from "./ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Badge } from "./ui/badge";
@@ -8,6 +8,8 @@ import { Check, Code, ImageIcon, MessageSquare, Music, VideoIcon, Zap } from "lu
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 
 const tools = [
     {
@@ -44,6 +46,59 @@ const tools = [
 
 export default function ProModal() {
   const proModal = useProModal();
+  const { user } = useUser();
+  const [token, setToken] = useState<string>("")
+  const onClick = async ()=>{
+    const data = {
+      first_name : user?.firstName,
+      email : user?.emailAddresses[0]?.emailAddress,
+      total : 10000
+    }
+    console.log(user?.emailAddresses)
+    const config = {
+      headers:{
+        "Content-Type" : "application/json"
+      }
+    }
+    proModal.onClose()
+    const response = await axios.post("/api/midtrans",data, config)
+    setToken(response.data.token)
+  }
+  useEffect(()=>{
+    if(token){
+      window.snap.pay(token,{
+        onSuccess: (result:any) =>{
+          localStorage.setItem("Pembayaran", JSON.stringify(result))
+          setToken("")
+        },
+        onPending: (result:any) =>{
+          localStorage.setItem("Pembayaran", JSON.stringify(result))
+          setToken("")
+        },
+        onError: (result:any) =>{
+          console.log(result)
+          setToken("")
+        },
+        onClose: (result:any) =>{
+          console.log("Anda belum menyelesaikan pembayaran")
+          setToken("")
+        }
+      })
+    }
+  }, [token])
+  useEffect(()=>{
+    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js"
+
+    let scriptTag = document.createElement("script")
+    scriptTag.src = midtransUrl
+
+    const midtransClientKey = process.env.MIDTRANS_CLIENT_KEY
+    scriptTag.setAttribute("data-client_key",midtransClientKey||"dz")
+    document.body.appendChild(scriptTag)
+    return()=>{
+      document.body.removeChild(scriptTag)
+    }
+  })
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
       <DialogContent>
@@ -73,7 +128,7 @@ export default function ProModal() {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button  size="lg" variant="premium" className="w-full">
+          <Button  onClick={onClick} size="lg" variant="premium" className="w-full">
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
