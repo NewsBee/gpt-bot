@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs";
 import { v4 as uuidv4 } from "uuid";
 import { snap } from "@/lib/snap";
 import prismadb from "@/lib/prismadb";
+import { checkSubscription } from "@/lib/subscribtion";
 
 
 export async function POST(req: Request) {
@@ -48,6 +49,13 @@ export async function POST(req: Request) {
 
     let transactionRedirectUrl = transaction.redirect_url;
     // console.log("transactionRedirectUrl:", transactionRedirectUrl);
+    const isSubscribe = await checkSubscription()
+    const existingSubscription = await prismadb.userSubscription.findUnique({
+      where: { userId: userId },
+    });
+    if(isSubscribe && existingSubscription){
+      return NextResponse.json({ status:201, message:"Anda sudah berlangganan" })
+    }
     
     await prismadb.userSubscription.create({
       data: {

@@ -22,7 +22,7 @@ export async function POST(req: NextApiRequest) {
 
         // Cari subscription berdasarkan order ID
         const subscription = await prismadb.userSubscription.findUnique({
-          where: { midtransOrderId: orderId },
+          where: { midtransOrderId:orderId },
         });
 
         if (!subscription) {

@@ -29,7 +29,7 @@ model UserApiLimit{
 model UserSubscription {
   id                 String   @id @default(cuid())
   userId             String   @unique
-  midtransOrderId    String?
+  midtransOrderId    String?  @unique
   midtransTransactionId String?
   subscriptionStatus String?
   price              Float?
