@@ -7,8 +7,8 @@ import ModalProvider from "@/components/modal-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Genius",
-  description: "AI Generator",
+  title: "GPT+",
+  description: "AI dengan banyak fitur",
 };
 
 export default function RootLayout({

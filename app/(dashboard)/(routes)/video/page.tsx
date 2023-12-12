@@ -55,8 +55,8 @@ export default function VideoPage() {
   return (
     <div>
       <Heading
-        title="Video Generation"
-        description="Turn your prompt into video."
+        title="Buat Video"
+        description="Perintahkan model untuk buat Video."
         icon={VideoIcon}
         iconColor="text-orange-700"
         bgColor="bg-orange-700/10"
@@ -84,9 +84,9 @@ export default function VideoPage() {
                 <FormItem className="col-span-12 lg:col-span-10">
                   <FormControl className="m-0 p-0">
                     <Input
-                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent px-2"
                       disabled={isLoading} 
-                      placeholder="Clone fish swimming arround a coral reef" 
+                      placeholder="Kuda terbang" 
                       {...field}
                     />
                   </FormControl>
@@ -104,7 +104,7 @@ export default function VideoPage() {
           </div>
         )}
         {!video && !isLoading && (
-          <Empty label="No video generated." />
+          <Empty label="Belum ada video" />
         )}
         {video && (
           <video className="w-full aspect-video mt-8 rounded-lg border bg-black">

@@ -13,35 +13,35 @@ import axios from "axios";
 
 const tools = [
     {
-      label: "Conversation",
+      label: "Percakapan",
       icon: MessageSquare,
       color: "text-violet-500",
       bgColor: "bg-violet-500/10",
     },
     {
-      label: "Music Generation",
+      label: "Buat Musik",
       icon: Music,
       color: "text-emerald-500",
       bgColor: "bg-emerald-500/10",
     },
     {
-      label: "Image Generation",
+      label: "Buat Gambar",
       icon: ImageIcon,
       color: "text-pink-700",
       bgColor: "bg-pink-700/10",
     },
     {
-      label: "Video Generation",
+      label: "Buat Video",
       icon: VideoIcon,
       color: "text-orange-700",
       bgColor: "bg-orange-700/10",
     },
-    {
-      label: "Code Generation",
-      icon: Code,
-      color: "text-green-700",
-      bgColor: "bg-green-700/10",
-    },
+    // {
+    //   label: "Code Generation",
+    //   icon: Code,
+    //   color: "text-green-700",
+    //   bgColor: "bg-green-700/10",
+    // },
   ];
 
 export default function ProModal() {
@@ -66,7 +66,8 @@ export default function ProModal() {
   }
   useEffect(()=>{
     if(token){
-      window.snap.pay(token,{
+      /* eslint-disable */
+      (window as any).snap.pay(token,{ 
         onSuccess: (result:any) =>{
           localStorage.setItem("Pembayaran", JSON.stringify(result))
           setToken("")
@@ -105,7 +106,7 @@ export default function ProModal() {
         <DialogHeader>
           <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
             <div className="flex items-center gap-x-2 font-bold text-xl">
-              Upgrade to Genius
+              Upgrade GPT+
               <Badge variant="premium" className="uppercase text-sm py-1">
                 pro
               </Badge>

@@ -8,9 +8,9 @@ export default function Loader() {
         <Image 
         alt="Empty" 
         fill 
-        src="/logo.png" />
+        src="/nlogo.png" />
       </div>
-      <p className="text-sm text-muted-foreground">Genius is thinking...</p>
+      <p className="text-sm text-muted-foreground">GPT+ sedang berpikir...</p>
     </div>
   );
 }

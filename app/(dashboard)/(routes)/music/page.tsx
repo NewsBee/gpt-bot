@@ -51,8 +51,8 @@ export default function MusicPage() {
   return (
     <div>
       <Heading
-        title="Music Generation"
-        description="Turn your prompt into music."
+        title="Buat Musik"
+        description="Pperintahkan model untuk membuat musik."
         icon={Music}
         iconColor="text-emerald-500"
         bgColor="bg-emerald-500/10"
@@ -80,9 +80,9 @@ export default function MusicPage() {
                 <FormItem className="col-span-12 lg:col-span-10">
                   <FormControl className="m-0 p-0">
                     <Input
-                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent px-2"
                       disabled={isLoading} 
-                      placeholder="Piano solo" 
+                      placeholder="Canon in rock piano" 
                       {...field}
                     />
                   </FormControl>
@@ -100,7 +100,7 @@ export default function MusicPage() {
           </div>
         )}
         {!music && !isLoading && (
-          <Empty label="No music generated." />
+          <Empty label="Belum ada musik" />
         )}
         {music && (
           <audio controls className="w-full mt-8">

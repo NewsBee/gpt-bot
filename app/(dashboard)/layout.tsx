@@ -14,7 +14,7 @@ export default async function DashboardLayout({
         md:fixed md:inset-y-0 bg-gray-900 w-72">
             <Sidebar apiLimitCount={apiLimitCount} />
         </div>
-        <main className="md:pl-72">
+        <main className="md:pl-72 bg-[#E5E7EB] h-full">
             <Navbar/>
             {children}
         </main>

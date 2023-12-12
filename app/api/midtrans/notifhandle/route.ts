@@ -7,8 +7,7 @@ import { NextApiRequest } from "next";
 import prismadb from "@/lib/prismadb";
 
 export async function POST(req: NextApiRequest) {
-  const rawBody = await buffer(req);
-  const notificationJson = JSON.parse(rawBody.toString());
+  const notificationJson = req.body;
 
   try {
     // Cek notifikasi kenetikan
@@ -17,8 +16,6 @@ export async function POST(req: NextApiRequest) {
       .then(async (statusResponse: any) => {
         const orderId: string = statusResponse.order_id;
         const transactionStatus: string = statusResponse.transaction_status;
-        // const orderId = statusResponse.order_id;
-        // const transactionStatus = statusResponse.transaction_status;
 
         // Cari subscription berdasarkan order ID
         const subscription = await prismadb.userSubscription.findUnique({
@@ -49,13 +46,16 @@ export async function POST(req: NextApiRequest) {
               midtransTransactionId: statusResponse.transaction_id,
             },
           });
+          return NextResponse.json({ status: 200, message: "Berhasil berlangganan" });
+        } else {
+          return NextResponse.json({ status: 200, message: "Transaksi belum diselesaikan" });
         }
-        NextResponse.json({ staus: 200, message: "Berhasil berlangganan" });
       });
-  } catch (error) {
-    NextResponse.json({
+  } catch (error:any) {
+    return NextResponse.json({
       status: 500,
-      message: "message: 'Internal server error', error: error.message",
+      message: "Internal server error",
+      error: error.message,
     });
   }
 }

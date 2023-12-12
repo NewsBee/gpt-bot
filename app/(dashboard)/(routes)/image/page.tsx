@@ -61,8 +61,8 @@ const PhotoPage = () => {
   return ( 
     <div>
       <Heading
-        title="Image Generation"
-        description="Turn your prompt into an image."
+        title="Buat Gambar"
+        description="Perintahkan model untuk membuat gambar."
         icon={ImageIcon}
         iconColor="text-pink-700"
         bgColor="bg-pink-700/10"
@@ -90,9 +90,9 @@ const PhotoPage = () => {
                 <FormItem className="col-span-12 lg:col-span-6">
                   <FormControl className="m-0 p-0">
                     <Input
-                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent px-2"
                       disabled={isLoading} 
-                      placeholder="A picture of a horse in Swiss alps" 
+                      placeholder="Ikan lumba-lumba di laut" 
                       {...field}
                     />
                   </FormControl>
@@ -170,7 +170,7 @@ const PhotoPage = () => {
           </div>
         )}
         {photos.length === 0 && !isLoading && (
-          <Empty label="No images generated." />
+          <Empty label="Belum ada foto" />
         )}
         {/* {photos.map((src) => (
             <div key={src} className="rounded-lg overflow-hidden">

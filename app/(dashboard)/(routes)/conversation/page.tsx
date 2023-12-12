@@ -65,8 +65,8 @@ export default function ConversationPage() {
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="Our most advanced conversation model"
+        title="Percakapan"
+        description="Model yang sama seperti pada ChatGPT"
         icon={MessageSquare}
         iconColor="text-violet-500"
         bgColor="bg-violet-500/10"
@@ -95,9 +95,9 @@ export default function ConversationPage() {
                   <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
                       <Input
-                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent px-2"
                         disabled={isLoading}
-                        placeholder="How do I calculate the radius of a circle?"
+                        placeholder="Bagaimana cara menghitung panjang persegi panjang?"
                         {...field}
                       />
                     </FormControl>
@@ -123,7 +123,7 @@ export default function ConversationPage() {
           )}
           {messages.length === 0 && !isLoading && (
             <div>
-              <Empty label="No Conversation Started" />
+              <Empty label="Belum ada percakapan" />
             </div>
           )}
           <div className="flex flex-col-reverse gap-y-4">
